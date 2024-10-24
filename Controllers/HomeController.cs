@@ -23,6 +23,12 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult About()
+    {
+        ViewData["Message"] = "said.";
+        return View();
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
