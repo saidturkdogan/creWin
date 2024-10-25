@@ -1,8 +1,20 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model List<Category>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h2>Kategoriler</h2>
+
+@if (Model != null && Model.Any())
+{
+    <ul>
+        @foreach (var category in Model)
+        {
+            <li>
+                <strong>@category.Name</strong> -
+                <a href="@category.Url">Detaylar</a>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>Kategori bulunamadı.</p>
+}
