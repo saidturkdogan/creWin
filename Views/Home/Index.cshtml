@@ -1,20 +1,10 @@
 ﻿@model List<Category>
 
-<h2>Kategoriler</h2>
+<h2>Product Categories</h2>
 
-@if (Model != null && Model.Any())
-{
-    <ul>
-        @foreach (var category in Model)
-        {
-            <li>
-                <strong>@category.Name</strong> -
-                <a href="@category.Url">Detaylar</a>
-            </li>
-        }
-    </ul>
-}
-else
-{
-    <p>Kategori bulunamadı.</p>
-}
+<ul>
+    @foreach (var category in Model)
+    {
+        <li>@category</li>
+    }
+</ul>
