@@ -1,10 +1,10 @@
-﻿@model List<Category>
+﻿@using creWin.Models;
+@model List<Category>
 
-<h2>Product Categories</h2>
-
+<h2>Kategoriler</h2>
 <ul>
-    @foreach (var category in Model)
+    @for (int i = 0; i < Model.Count; i++)
     {
-        <li>@category</li>
+        <li>@Model[i]</li>
     }
 </ul>
