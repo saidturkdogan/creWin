@@ -1,6 +1,7 @@
 ﻿using creWin.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Collections;
 using System.Diagnostics;
 
 namespace creWin.Controllers
@@ -32,9 +33,19 @@ namespace creWin.Controllers
                 {
                     var data = await response.Content.ReadAsStringAsync();
                     Debug.WriteLine($"Response Data: {data}"); // Gelen veriyi görelim
-                    var categories = JsonConvert.DeserializeObject<List<ProductViewModel>>(data);
+                    var categories = JsonConvert.DeserializeObject<List<CategoryViewModel>>(data);
+
+                    var categoryModels = categories.Select(c => new CategoryViewModel
+                    {
+                        Slug = c.Slug,
+                        Name = c.Name,
+                        Url = Url.Action("Details", "Product", new { slug = c.Slug })
+                    }).ToList();
+
+
                     return View(categories);
                 }
+
 
                 Debug.WriteLine("Request failed"); // Hata durumunda log
                 return View(new List<string>());
@@ -45,5 +56,51 @@ namespace creWin.Controllers
                 return View(new List<string>());
             }
         }
+
+
+        [HttpGet]
+        [Route("Product/Details/{slug}")]
+        public async Task<IActionResult> Details(string slug)
+        {
+            if (string.IsNullOrEmpty(slug))
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                // API'ye gönderirken CategoryViewModel'den gelen slug'ı kullanıyoruz
+                var url = $"https://dummyjson.com/products/category/{slug}";
+                Debug.WriteLine($"Requesting URL: {url}");
+
+                var response = await _client.GetAsync(url);
+                Debug.WriteLine($"Response Status: {response.StatusCode}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine($"Response Data: {data}");
+
+                    var productsResponse = JsonConvert.DeserializeObject<ProductsResponse>(data);
+                    return View(productsResponse.Products);
+                }
+
+                Debug.WriteLine("Request failed");
+                return View(new List<ProductViewModel>());
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Exception: {ex.Message}");
+                return View(new List<ProductViewModel>());
+            }
+        }
     }
+
+    public class ProductsResponse
+    {
+        [JsonProperty("products")]
+        public List<ProductViewModel> Products { get; set; }
+    }
+
 }
+

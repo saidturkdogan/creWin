@@ -1,17 +1,18 @@
-﻿@model IEnumerable<creWin.Models.ProductViewModel>
+﻿@model IEnumerable<creWin.Models.CategoryViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Categories";
+    var counter = 1;
 }
 
-<h1>Index</h1>
+<h1>Categories</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
+            <th>
+                ID
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Slug)
             </th>
@@ -33,6 +34,9 @@
             {
                 <tr>
                     <td>
+                        @counter
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.Slug)
                     </td>
                     <td>
@@ -42,11 +46,10 @@
                         @Html.DisplayFor(modelItem => item.Url)
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                        @Html.ActionLink("Products", "Details", new { slug = item.Slug })
                     </td>
                 </tr>
+                counter++;
 
             }
         }
