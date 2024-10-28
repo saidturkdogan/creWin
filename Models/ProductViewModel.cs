@@ -36,5 +36,13 @@ namespace creWin.Models
         [Required]
         [DisplayName("stock")]
         public int stock { get; set; }
+
+        [Required]
+        [DisplayName("thumbnail")]
+        public string thumbnail { get; set; }
+
+        [Required]
+        [DisplayName("qrCode")]
+        public string qrCode { get; set; }
     }
 }
